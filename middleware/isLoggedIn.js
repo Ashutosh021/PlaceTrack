@@ -9,7 +9,7 @@ const isLoggedIn = (req, res, next) => {
     }
 
     try {
-        const data = jwt.verify(token, process.env.jwt_secret);
+        const data = jwt.verify(token, process.env.JWT_SECRET);
         req.user = data;
         next();
     } catch (err) {

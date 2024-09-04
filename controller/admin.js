@@ -31,7 +31,7 @@ const adminLogin = async (req, res) => {
       });
     }
 
-    let token = jwt.sign({ email: user.email }, process.env.jwt_secret);
+    let token = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
     res.cookie("token", token, { httpOnly: true, maxAge: 3600000 }); // 1 hour
 
     return res.redirect("/api/v1/admin");
@@ -73,7 +73,7 @@ const adminSignup = async (req, res) => {
       adminCode
     });
 
-    let token = jwt.sign({ email: newAdmin.email }, process.env.jwt_secret);
+    let token = jwt.sign({ email: newAdmin.email }, process.env.JWT_SECRET );
     res.cookie("token", token, { httpOnly: true, maxAge: 3600000 }); // 1 hour
 
     return res.redirect("/api/v1/admin/");
