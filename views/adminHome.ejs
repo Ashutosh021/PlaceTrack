@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-700 min-h-screen">
+
+    <!-- Navbar -->
+    <header class="text-white p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="/api/v1/admin" class="text-xl font-bold">PlaceTrack</a>
+            <nav class="space-x-4">
+                <a href="/api/v1/admin" class="hover:underline">Home</a>
+                <a href="/api/v1/admin/about" class="hover:underline">About</a>
+                <a href="/api/v1/admin/download" class="hover:underline">Download Data</a>
+                <a href="/api/v1/admin/profile" class="hover:underline">Profile</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-6 flex flex-col">
+        <!-- Filter Options -->
+        <div class="flex justify-center gap-4 mb-6">
+            <!-- Batch Buttons -->
+            <button id="batch2023" onclick="filterData('2023')" class="batch-button p-2 rounded-md <%= selectedBatch === '2023' ? 'bg-cyan-500' : 'bg-cyan-300' %> hover:bg-cyan-500">Batch 2023</button>
+            <button id="batch2024" onclick="filterData('2024')" class="batch-button p-2 rounded-md <%= selectedBatch === '2024' ? 'bg-cyan-500' : 'bg-cyan-300' %> hover:bg-cyan-500">Batch 2024</button>
+            <button id="batch2025" onclick="filterData('2025')" class="batch-button p-2 rounded-md <%= selectedBatch === '2025' ? 'bg-cyan-500' : 'bg-cyan-300' %> hover:bg-cyan-500">Batch 2025</button>
+            
+            <!-- Section Dropdown -->
+            <select id="sectionFilter" onchange="filterBySection()" class="bg-cyan-300 p-2 rounded-md">
+                <option value="" <%= !selectedSection ? 'selected' : '' %>>All Sections</option>
+                <option value="A" <%= selectedSection === 'A' ? 'selected' : '' %>>Section A</option>
+                <option value="B" <%= selectedSection === 'B' ? 'selected' : '' %>>Section B</option>
+                <option value="C" <%= selectedSection === 'C' ? 'selected' : '' %>>Section C</option>
+                <option value="D" <%= selectedSection === 'D' ? 'selected' : '' %>>Section D</option>
+            </select>
+            <a href="/api/v1/admin" class="bg-cyan-300 p-2 rounded-md hover:bg-red-500 hover:text-white">Remove</a>
+        </div>
+    
+        <!-- Right Side Content -->
+        <div class="flex flex-row flex-wrap justify-center gap-2">
+            <% if (users.length > 0) { %>
+                <% users.forEach(user => { %>
+                    <div class="bg-gray-500 p-4 rounded-lg shadow-md mb-4 w-56 text-center">
+                        <h3 class="text-2xl font-semibold text-cyan-300">
+                            <%= user.name %>
+                        </h3>
+                        <div class="flex flex-col justify-around">
+                            <p class="text-white"><%= user.email %></p>
+                            <p class="text-white"><%= user.phone %></p>
+                            <p class="text-white"><%= user.section %></p>
+                            <p class="text-white"><%= user.batch %></p>
+                            <a href="/api/v1/admin/slotdata/details/<%= user._id %>" class="text-gray-600 p-2 bg-cyan-300 w-20 rounded-md m-auto mt-3 hover:bg-cyan-500">Details</a>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p class="text-white">No users available.</p>
+            <% } %>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-cyan-600 text-white p-4 mt-6">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2024 PlaceTrack. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function filterData(batch) {
+            const section = document.getElementById('sectionFilter').value;
+            window.location.href = `/api/v1/admin?batch=${batch}&section=${section}`;
+        }
+
+        function filterBySection() {
+            const section = document.getElementById('sectionFilter').value;
+            const batch = '<%= selectedBatch %>';
+            window.location.href = `/api/v1/admin?batch=${batch}&section=${section}`;
+        }
+    </script>
+</body>
+
+</html>

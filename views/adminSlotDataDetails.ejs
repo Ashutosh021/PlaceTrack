@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-700 min-h-screen">
+
+    <!-- Navbar -->
+    <header class="text-white p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="/api/v1/admin" class="text-xl font-bold">PlaceTrack</a>
+            <nav class="space-x-4">
+                <a href="/api/v1/admin" class="hover:underline">Home</a>
+                <a href="/api/v1/admin/about" class="hover:underline">About</a>
+                <a href="/api/v1/admin/download/" class="hover:underline">Download Data</a>
+                <a href="/api/v1/admin/profile" class="hover:underline">Profile</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-6 flex flex-col">
+        <div class="flex flex-row p-6 justify-between">
+            <h2 class="text-2xl font-bold text-white mb-4"><%= user.name %>'s slot details </h2>
+        </div>
+
+        <div class="flex flex-row flex-wrap justify-center gap-5 w-full ">
+            <% if (user) { %>
+                <div class="bg-gray-500 p-6 rounded-lg shadow-md mb-4 w-full">
+                    <h3 class="text-2xl font-semibold text-cyan-500">
+                        <%= user.name %>
+                    </h3>
+                    <div class="flex flex-col justify-around ">
+                        <p class="text-white">Email: <%= user.email %></p>
+                        <p class="text-white">Phone: <%= user.phone %></p>
+                        <p class="text-white">Section: <%= user.section %></p>
+                        <p class="text-white">Batch: <%= user.batch %></p>
+                        <% if (user.slotIds && user.slotIds.length > 0) { %>
+                            <div class="flex flex-row flex-wrap justify-evenly">
+                                <% user.slotIds.forEach(slot => { %>
+                                    <% if (slot.realTimeLocation !== "null") { %>
+                                    <div class="bg-gray-600 p-10 rounded-lg mt-4 mb-4>
+                                        <h3 class="text-2xl font-semibold text-cyan-500 text-center mb-5">Company Details</h3>
+                                        <p class="text-white"><%= slot.companyName %></p>
+                                        <p class="text-white"><%= slot.companyCity %></p>
+                                        <p class="text-white"><%= slot.reportingDate %></p>
+                                        <p class="text-white"><%= slot.reportingTime %></p>
+                                        <p class="text-white"><%= slot.realTimeLocation %></p>
+                                        <img src="<%= slot.locationPic %>" class="p-5 rounded-md" alt="Company Image">
+                                    </div>
+                                <% } %>
+                                <% }) %>
+                            </div>
+                        <% }else{ %>
+                            <h4 class="text-center mt-5">Not Registered to any company</h4>
+                            <%}%>
+                        <a href="/api/v1/admin" class="text-gray-600 p-2 bg-cyan-300 w-20 rounded-md m-auto mt-3 hover:bg-cyan-500 text-center">Go Back</a>
+                    </div>
+                </div>
+            <% } else { %>
+                <p class="text-white">No user available.</p>
+            <% } %>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-cyan-600 text-white p-4 mt-6">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2024 PlaceTrack. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

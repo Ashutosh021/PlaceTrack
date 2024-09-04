@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Home</title>
+    <!-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^2.2/dist/tailwind.min.css" rel="stylesheet"> -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-700 min-h-screen">
+
+    <!-- Navbar -->
+    <header class="text-white p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="/api/v1/user" class="text-xl font-bold">PlaceTrack</a>
+            <nav class="space-x-4">
+                <a href="/api/v1/user" class="hover:underline">Home</a>
+                <a href="/api/v1/user/about" class="hover:underline">About</a>
+                <a href="/api/v1/user/history" class="hover:underline">Previous Slot</a>
+                <a href="/api/v1/user/profile/" class="hover:underline">Profile</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-6 flex flex-col">
+        <!-- Left Side Content -->
+        <div class="flex flex-row p-6 justify-between">
+            <h2 class="text-2xl font-bold text-white mb-4">Your Slots</h2>
+            <a href="/api/v1/slot/create" class="bg-black text-cyan-400 p-2 w-40 text-xl text-center rounded-md hover:cursor-pointer hover:bg-slate-500">Create Slot</a>
+        </div>
+        
+        <!-- Right Side Content -->
+        <div class="flex flex-row flex-wrap justify-center gap-5">
+            <% if (user && user.slotIds && user.slotIds.length > 0) { %>
+                <% user.slotIds.forEach((slot) => { %>
+                    <div class="bg-gray-500 p-6 rounded-lg shadow-md mb-4 w-80">
+                        <h3 class="text-2xl font-semibold text-gray-800"><%= slot.companyName %></h3>
+                        <p class="text-white">City: <%= slot.companyCity %></p>
+                        <p class="text-white">Date: <%= slot.reportingDate %></p>
+                        <p class="text-white">Time: <%= slot.reportingTime %></p>
+                        <div class="flex flex-row justify-around mt-4">
+                            <a href="/api/v1/slot/edit/<%= slot._id %>" class="bg-slate-700 text-cyan-400 p-2 w-20 text-center rounded-md hover:cursor-pointer hover:bg-black">Edit</a>
+                            <a href="/api/v1/slot/validate/<%= slot._id %>" class="bg-slate-700 text-cyan-400 p-2 w-30 text-center rounded-md hover:cursor-pointer hover:bg-black">Verify Location</a>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p class="text-white">No slots available.</p>
+            <% } %>
+            
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-cyan-600 text-white p-4 mt-6">
+        <div class="container mx-auto text-center">
+            <p>&copy; PlaceTrack. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

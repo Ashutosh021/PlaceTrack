@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <!-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^2.2/dist/tailwind.min.css" rel="stylesheet"> -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-700 min-h-screen">
+
+    <!-- Navbar -->
+    <header class="text-white p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="/api/v1/user" class="text-xl font-bold">PlaceTrack</a>
+            <nav class="space-x-4">
+                <a href="/api/v1/user" class="hover:underline">Home</a>
+                <a href="/api/v1/user/about" class="hover:underline">About</a>
+                <a href="/api/v1/user/history" class="hover:underline">Previous Slot</a>
+                <a href="/api/v1/profile" class="hover:underline">Profile</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-6 flex flex-col">
+        <div class="flex flex-row p-6 justify-between">
+            <h2 class="text-2xl font-bold text-white mb-4">Profile</h2>
+        </div>
+        
+        <div class="flex flex-row flex-wrap justify-center gap-5">
+            <div class="bg-gray-500 p-6 rounded-lg shadow-md mb-4 w-96">
+                <img src="<%=user.profilePic%>" alt="proile.pic" class="m-auto rounded-full w-36 mb-5">
+                <form action="/api/v1/user/profile/update/<%=user._id%>" method="POST" class="flex flex-col justify-around mt-2 gap-4">
+                    <input type="text" name="name" class="text-gray-600 rounded-md p-2" value="<%= user.name %>" placeholder="Name" required>
+                    <input type="email" name="email" class="text-gray-600 rounded-md p-2" value="<%= user.email %>" placeholder="Email" required>
+                    <input type="text" name="phone" class="text-gray-600 rounded-md p-2" value="<%= user.phone %>" placeholder="Phone" required>
+                    <input type="text" name="section" class="text-gray-600 rounded-md p-2" value="<%= user.section %>" placeholder="Section" required>
+                    <input type="number" name="batch" class="text-gray-600 rounded-md p-2" value="<%= user.batch %>" placeholder="Batch" required>
+                    <input type="submit" class="text-cyan-600 rounded-md p-2 w-60 m-auto bg-white hover:bg-black" value="Update Info">
+                </form>
+                <div class="mt-5 flex justify-center">
+                    <a href="/logout" class="text-cyan-600 rounded-md p-2 bg-white hover:bg-black w-60 text-center">logout</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-cyan-600 text-white p-4 mt-6">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2024 PlaceTrack. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

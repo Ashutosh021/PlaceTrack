@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Data</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-600">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h1 class="text-3xl font-bold text-white">Student Slot Data</h1>
+        </div>
+
+        <div class="flex justify-center gap-4 mb-6">
+            <!-- Batch Dropdown -->
+            <select id="batchFilter" onchange="filterData()" class="bg-cyan-300 p-2 rounded-md">
+                <option value="" <%= !selectedSection ? 'selected' : '' %>>Batch</option>
+                <option value="2023" <%= selectedBatch === '2023' ? 'selected' : '' %>>2023</option>
+                <option value="2024" <%= selectedBatch === '2024' ? 'selected' : '' %>>2024</option>
+                <option value="2025" <%= selectedBatch === '2025' ? 'selected' : '' %>>2025</option>
+            </select>
+
+            <!-- Section Dropdown -->
+            <select id="sectionFilter" onchange="filterData()" class="bg-cyan-300 p-2 rounded-md">
+                <option value="" <%= !selectedSection ? 'selected' : '' %>>Section</option>
+                <option value="A" <%= selectedSection === 'A' ? 'selected' : '' %>>Section A</option>
+                <option value="B" <%= selectedSection === 'B' ? 'selected' : '' %>>Section B</option>
+                <option value="C" <%= selectedSection === 'C' ? 'selected' : '' %>>Section C</option>
+                <option value="D" <%= selectedSection === 'D' ? 'selected' : '' %>>Section D</option>
+            </select>
+
+            <a href="/api/v1/admin/download" class="bg-cyan-300 p-2 rounded-md hover:bg-red-500 hover:text-white">Remove</a>
+        </div>
+        <div class="text-center mt-5">
+            <button onclick="window.print()" class="bg-blue-500 text-white p-2 w-150 rounded">Print</button>
+            <a href="/api/v1/admin" class="bg-blue-500 text-white p-2 w-150 rounded">Go Back</a>
+        </div>
+        <div class="stuData p-2 bg-gray-600 rounded shadow-lg">
+            <% if (slots && slots.length > 0) { %>
+                <table class="w-full text-cyan-300 border-collapse">
+                    <thead>
+                        <tr class="bg-gray-700">
+                            <th class="p-2 text-center border-b">Name</th>
+                            <th class="p-2 text-center border-b">Email</th>
+                            <th class="p-2 text-center border-b">Section</th>
+                            <th class="p-2 text-center border-b">Company Name</th>
+                            <th class="p-2 text-center border-b">Company City</th>
+                            <th class="p-2 text-center border-b">Reporting Date</th>
+                            <th class="p-2 text-center border-b">Reporting Time</th>
+                            <th class="p-2 text-center border-b">Location Pic</th>
+                            <th class="p-2 text-center border-b">Real-Time Location</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% slots.forEach((slot) => { %>
+                            <tr class="text-center border-b text-white">
+                                <td class="p-2"><%= slot.userId.name %></td>
+                                <td class="p-2"><%= slot.userId.email %></td>
+                                <td class="p-2"><%= slot.userId.section %></td>
+                                <td class="p-2"><%= slot.companyName %></td>
+                                <td class="p-2"><%= slot.companyCity %></td>
+                                <td class="p-2"><%= slot.reportingDate %></td>
+                                <td class="p-2"><%= slot.reportingTime %></td>
+                                <td class="p-2">
+                                    <%= slot.locationPic && slot.locationPic !== 'null' ? 'Uploaded' : 'Not Uploaded' %>
+                                </td>
+                                <td class="p-2">
+                                    <%= slot.realTimeLocation && slot.realTimeLocation !== 'null' ? 'Verified' : 'Not Verified' %>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <p class="text-center text-red-500">No Data available || No slot created</p>
+            <% } %>
+        </div>
+        
+
+    </div>
+</body>
+    
+<script>
+    function filterData() {
+        const section = document.getElementById('sectionFilter').value;
+        const batch = document.getElementById('batchFilter').value;
+        window.location.href = `/api/v1/admin/download?batch=${batch}&section=${section}`;
+    }
+</script>
+</html>

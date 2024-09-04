@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= slot ? 'Edit Slot' : 'Create Slot' %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-600">
+
+    <header class=" text-white p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="/api/v1/user" class="text-xl font-bold ">PlaceTrack</a>
+            <nav class="space-x-4">
+                <a href="/api/v1/user" class="hover:underline">Home</a>
+                <a href="/api/v1/user/about" class="hover:underline">About</a>
+                <a href="/api/v1/user/history" class="hover:underline">Previous Slot</a>
+                <a href="/api/v1/profile" class="hover:underline">Profile</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="min-h-screen flex items-center justify-center mt-10">
+        
+        
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+        <h1 class="text-3xl font-bold mb-6 text-center text-gray-800"><%= slot ? 'Edit Slot' : 'Create Slot' %></h1>
+        <form action="<%= slot ? `/api/v1/slot/update/${slot._id} ` : '/api/v1/slot/create' %>" method="POST" class="space-y-6">
+            <div>
+                <label for="companyName" class="block text-gray-700 text-sm font-medium mb-2">Company Name</label>
+                <input type="text" id="companyName" name="companyName" value="<%= slot ? slot.companyName : '' %>" required class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400" placeholder="Company Name">
+            </div>
+            <div>
+                <label for="companyCity" class="block text-gray-700 text-sm font-medium mb-2">Company City</label>
+                <input type="text" id="companyCity" name="companyCity" value="<%= slot ? slot.companyCity : '' %>" required class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400" placeholder="Company City">
+            </div>
+            <div>
+                <label for="reportingDate" class="block text-gray-700 text-sm font-medium mb-2">Reporting Date</label>
+                <input type="date" id="reportingDate" name="reportingDate" value="<%= slot ? new Date(slot.reportingDate).toISOString().split('T')[0] : '' %>" required class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400">
+            </div>
+            <div>
+                <label for="reportingTime" class="block text-gray-700 text-sm font-medium mb-2">Reporting Time</label>
+                <input type="time" id="reportingTime" name="reportingTime" value="<%= slot ? slot.reportingTime : '' %>" required class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400">
+            </div>
+            <div>
+                <button type="submit" class="w-full bg-cyan-500 text-white text-lg p-3 rounded-md hover:bg-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-400"><%= slot ? 'Update Slot' : 'Create Slot' %></button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
