@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-600 min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <header class="text-white p-4 shadow-md bg-cyan-600">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="/" class="text-xl font-bold">PlaceTrack</a>
+            <nav class="space-x-4">
+                <a href="/" class="hover:underline">Home</a>
+                <a href="/contact" class="hover:underline">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="flex-grow flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full">
+            <h1 class="text-4xl font-bold text-center text-gray-800 mb-4">Welcome to PlaceTrack</h1>
+            <p class="text-lg text-center text-gray-600 mb-8">Your one-stop solution for all placement drive tracking needs.</p>
+            
+            <!-- Buttons Section -->
+            <div class="flex justify-around">
+                <a href="/api/v1/admin/signup" class="flex-shrink-0">
+                    <button class="bg-cyan-400 text-white text-2xl py-4 px-8 rounded-md hover:bg-cyan-600 transition duration-300 ease-in-out">Admin SignUp</button>
+                </a>
+            </div>
+            
+            <!-- Login Link -->
+            <div class="flex flex-col items-center mt-4">
+                <a href="/api/v1/admin/login" class="text-cyan-500 hover:underline text-center">
+                    Already have an account? <br> [ ADMIN ]
+                </a>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

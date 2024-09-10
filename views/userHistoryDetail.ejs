@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Slot History Details</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-700 min-h-screen">
+
+<body class="bg-slate-700 min-h-screen flex flex-col">
 
     <!-- Navbar -->
-    <header class="text-white p-4 shadow-md">
+    <header class="bg-cyan-600 text-white p-4 shadow-md">
         <div class="container mx-auto flex justify-between items-center">
             <a href="/api/v1/user" class="text-xl font-bold">PlaceTrack</a>
             <nav class="space-x-4">
@@ -22,35 +24,39 @@
     </header>
 
     <!-- Main Content -->
-    <main class="container mx-auto p-6 flex flex-col">
-        <!-- Left Side Content -->
-        <div class="flex flex-row p-6 justify-between">
-            <h2 class="text-2xl font-bold text-white mb-4"><%= slot.companyName %>'s Slot Details</h2>
+    <main class="container mx-auto p-6 flex-grow">
+        <!-- Slot Details Header -->
+        <div class="flex flex-col justify-center items-center mb-8">
+            <h2 class="text-3xl font-bold text-cyan-400 mb-4 text-center"><%= slot.companyName %>'s Slot Details</h2>
         </div>
-        
-        <!-- Right Side Content -->
-        <div class="flex flex-row flex-wrap justify-center gap-5">
+
+        <!-- Slot Details -->
+        <div class="flex flex-col items-center gap-6">
             <% if (slot) { %>
-                <div class="bg-gray-500 p-6 rounded-lg shadow-md mb-4 w-80">
-                    <h3 class="text-2xl font-semibold text-gray-800 text-center mb-5"><%= slot.companyName %></h3>
-                    <p class="text-white">City: <%= slot.companyCity %></p>
-                    <p class="text-white">Date: <%= slot.reportingDate %></p>
-                    <p class="text-white">Time: <%= slot.reportingTime %></p>
-                    <p class="text-white">Address: <%= slot.realTimeLocation %></p>
-                    <img src="<%= slot.locationPic%>" alt="none" class="mt-4 p-4 w-72 m-auto"/>
-                    <p class="text-center text-cyan-300 font-bold">Location Pic</p>
+            <div class="bg-gray-600 p-6 rounded-lg shadow-md w-full max-w-lg">
+                <h3 class="text-2xl font-semibold text-center text-cyan-300 mb-6"><%= slot.companyName %></h3>
+                <div class="text-white space-y-4">
+                    <p><span class="font-bold">City:</span> <%= slot.companyCity %></p>
+                    <p><span class="font-bold">Date:</span> <%= slot.reportingDate %></p>
+                    <p><span class="font-bold">Time:</span> <%= slot.reportingTime %></p>
+                    <p><span class="font-bold">Address:</span> <%= slot.realTimeLocation %></p>
                 </div>
+                <!-- Image with 300x300 size -->
+                <img src="<%= slot.locationPic %>" alt="Location Image" class="mt-6 rounded-md shadow-lg mx-auto w-72 h-72 object-cover">
+                <p class="text-center text-cyan-300 font-bold mt-2">Location Picture</p>
+            </div>
             <% } else { %>
-                <p class="text-white">No slot available.</p>
+            <p class="text-white text-center text-lg">No slot available.</p>
             <% } %>
         </div>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-cyan-600 text-white p-4 mt-6">
+    <footer class="bg-cyan-600 text-white p-4 mt-8">
         <div class="container mx-auto text-center">
             <p>&copy; 2024 PlaceTrack. All rights reserved.</p>
         </div>
     </footer>
 </body>
+
 </html>

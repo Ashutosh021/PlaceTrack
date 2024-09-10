@@ -8,15 +8,14 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-slate-700 min-h-screen">
+<body class="bg-slate-700 min-h-screen flex flex-col">
 
     <!-- Navbar -->
-    <header class="text-white p-4 shadow-md">
+    <header class="text-white p-4 shadow-md bg-cyan-600">
         <div class="container mx-auto flex justify-between items-center">
             <a href="/api/v1/admin" class="text-xl font-bold">PlaceTrack</a>
-            <nav class="space-x-4">
+            <nav class="space-x-4 text-sm">
                 <a href="/api/v1/admin" class="hover:underline">Home</a>
-                <a href="/api/v1/admin/about" class="hover:underline">About</a>
                 <a href="/api/v1/admin/download" class="hover:underline">Download Data</a>
                 <a href="/api/v1/admin/profile" class="hover:underline">Profile</a>
             </nav>
@@ -24,39 +23,41 @@
     </header>
 
     <!-- Main Content -->
-    <main class="container mx-auto p-6 flex flex-col">
+    <main class="container mx-auto p-6 flex-grow">
         <!-- Filter Options -->
-        <div class="flex justify-center gap-4 mb-6">
-            <!-- Batch Buttons -->
-            <button id="batch2023" onclick="filterData('2023')" class="batch-button p-2 rounded-md <%= selectedBatch === '2023' ? 'bg-cyan-500' : 'bg-cyan-300' %> hover:bg-cyan-500">Batch 2023</button>
-            <button id="batch2024" onclick="filterData('2024')" class="batch-button p-2 rounded-md <%= selectedBatch === '2024' ? 'bg-cyan-500' : 'bg-cyan-300' %> hover:bg-cyan-500">Batch 2024</button>
-            <button id="batch2025" onclick="filterData('2025')" class="batch-button p-2 rounded-md <%= selectedBatch === '2025' ? 'bg-cyan-500' : 'bg-cyan-300' %> hover:bg-cyan-500">Batch 2025</button>
-            
+        <div class="flex flex-col sm:flex-row justify-center gap-4 mb-6">
+            <!-- Batch Dropdown -->
+            <select id="batchFilter" onchange="filterData()" class="bg-cyan-300 p-2 rounded-md text-sm">
+                <option value="" <%= !selectedSection ? 'selected' : '' %>>Batch</option>
+                <option value="2023" <%= selectedBatch === '2023' ? 'selected' : '' %>>2023</option>
+                <option value="2024" <%= selectedBatch === '2024' ? 'selected' : '' %>>2024</option>
+                <option value="2025" <%= selectedBatch === '2025' ? 'selected' : '' %>>2025</option>
+            </select>
             <!-- Section Dropdown -->
-            <select id="sectionFilter" onchange="filterBySection()" class="bg-cyan-300 p-2 rounded-md">
+            <select id="sectionFilter" onchange="filterData()" class="bg-cyan-300 p-2 rounded-md text-sm">
                 <option value="" <%= !selectedSection ? 'selected' : '' %>>All Sections</option>
                 <option value="A" <%= selectedSection === 'A' ? 'selected' : '' %>>Section A</option>
                 <option value="B" <%= selectedSection === 'B' ? 'selected' : '' %>>Section B</option>
                 <option value="C" <%= selectedSection === 'C' ? 'selected' : '' %>>Section C</option>
                 <option value="D" <%= selectedSection === 'D' ? 'selected' : '' %>>Section D</option>
             </select>
-            <a href="/api/v1/admin" class="bg-cyan-300 p-2 rounded-md hover:bg-red-500 hover:text-white">Remove</a>
+            <a href="/api/v1/admin" class="bg-red-500 text-white text-center p-2 rounded-md hover:bg-red-600 text-sm">Remove Filters</a>
         </div>
     
-        <!-- Right Side Content -->
-        <div class="flex flex-row flex-wrap justify-center gap-2">
+        <!-- Right Side Content (User Cards) -->
+        <div class="flex flex-wrap justify-center gap-4">
             <% if (users.length > 0) { %>
                 <% users.forEach(user => { %>
-                    <div class="bg-gray-500 p-4 rounded-lg shadow-md mb-4 w-56 text-center">
-                        <h3 class="text-2xl font-semibold text-cyan-300">
+                    <div class="bg-gray-800 p-4 rounded-lg shadow-md mb-4 w-64 text-center transition duration-300 hover:shadow-lg transform hover:scale-105">
+                        <h3 class="text-2xl font-semibold text-cyan-300 mb-2">
                             <%= user.name %>
                         </h3>
-                        <div class="flex flex-col justify-around">
+                        <div class="flex flex-col items-center space-y-2">
                             <p class="text-white"><%= user.email %></p>
                             <p class="text-white"><%= user.phone %></p>
-                            <p class="text-white"><%= user.section %></p>
-                            <p class="text-white"><%= user.batch %></p>
-                            <a href="/api/v1/admin/slotdata/details/<%= user._id %>" class="text-gray-600 p-2 bg-cyan-300 w-20 rounded-md m-auto mt-3 hover:bg-cyan-500">Details</a>
+                            <p class="text-white">Section: <%= user.section %></p>
+                            <p class="text-white">Batch: <%= user.batch %></p>
+                            <a href="/api/v1/admin/slotdata/details/<%= user._id %>" class="text-gray-600 p-2 bg-cyan-300 w-full rounded-md mt-3 hover:bg-cyan-500 transition-colors">Details</a>
                         </div>
                     </div>
                 <% }) %>
@@ -65,7 +66,7 @@
             <% } %>
         </div>
     </main>
-    
+
     <!-- Footer -->
     <footer class="bg-cyan-600 text-white p-4 mt-6">
         <div class="container mx-auto text-center">
@@ -74,14 +75,9 @@
     </footer>
 
     <script>
-        function filterData(batch) {
+        function filterData() {
             const section = document.getElementById('sectionFilter').value;
-            window.location.href = `/api/v1/admin?batch=${batch}&section=${section}`;
-        }
-
-        function filterBySection() {
-            const section = document.getElementById('sectionFilter').value;
-            const batch = '<%= selectedBatch %>';
+            const batch = document.getElementById('batchFilter').value;
             window.location.href = `/api/v1/admin?batch=${batch}&section=${section}`;
         }
     </script>

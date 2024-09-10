@@ -26,13 +26,17 @@ app.get('/',(req,res)=>{
     res.render('index');
 })
 
-app.use('/register',(req,res)=>{
-    res.render('register');
+app.use('/register-admin',(req,res)=>{
+    res.render('registerAdmin');
+})
+
+app.use('/register-user',(req,res)=>{
+    res.render('registerUser');
 })
 
 app.use('/logout',(req,res)=>{
     res.cookie("token","");
-    res.redirect('/register');
+    res.redirect('/');
 })
 
 

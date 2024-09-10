@@ -7,41 +7,43 @@
     <!-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^2.2/dist/tailwind.min.css" rel="stylesheet"> -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-700 min-h-screen">
+<body class="bg-slate-700 min-h-screen flex flex-col">
 
     <!-- Navbar -->
-    <header class=" text-white p-4 shadow-md">
+    <header class="bg-cyan-600 text-white p-4 shadow-md">
         <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-bold ">PlaceTrack</h1>
+            <a href="/" class="text-xl font-bold">PlaceTrack</a>
             <nav class="space-x-4">
                 <a href="/" class="hover:underline">Home</a>
-                <a href="/about" class="hover:underline">About</a>
                 <a href="/contact" class="hover:underline">Contact</a>
-                <a href="/register" class="hover:underline">Register/Login</a>
             </nav>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="container mx-auto p-6 flex">
+    <main class="container mx-auto p-6 flex-grow flex flex-col md:flex-row">
         <!-- Left Side Content -->
-        <div class="w-1/2 p-6">
+        <div class="w-full md:w-1/2 p-6">
             <h2 class="text-4xl font-bold text-white mb-4">PlaceTrack</h2>
-            <p class="text-white text-lg mb-8">Your one stop solution for placement drive tracking.</p>
+            <p class="text-white text-lg mb-8">Your one-stop solution for placement drive tracking.</p>
+            <div class="register flex flex-col sm:flex-row justify-between w-full sm:w-1/2 space-y-4 sm:space-y-0">
+                <a href="/register-admin" class="bg-cyan-500 text-white text-xl text-center py-2 px-4 rounded hover:bg-cyan-600">I'm an Admin</a>
+                <a href="/register-user" class="bg-cyan-500 text-white text-xl text-center py-2 px-4 rounded hover:bg-cyan-600">I'm a User</a>
+            </div>
         </div>
         
         <!-- Right Side Content -->
-        <div class="w-1/2 flex flex-col justify-center ">
-            <div class="bg-gray-500 p-6 rounded-lg shadow-md mb-4 sm:flex flex-col">
-                <h3 class="text-2xl font-semibold text-gray-800">PlaceTrack is here ...</h3>
-                <br>
-                <img width="800px" src="../images/hm.png" alt="placement image"/>
+        <div class="w-full md:w-1/2 flex flex-col justify-center items-center md:items-end">
+            <div class="bg-gray-500 p-6 rounded-lg shadow-md mb-4 flex flex-col items-center">
+                <h3 class="text-2xl font-semibold text-gray-100 mb-4 text-center">PlaceTrack is here to help you...</h3>
+                <p class ="text-md font-semibold text-gray-100 mb-4 text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit laboriosam pariatur perferendis numquam molestiae labore deserunt quisquam iure itaque eos!</p>
+                <img src="../images/hm.png" alt="placement image" class="rounded-lg w-full h-auto max-w-sm"/>
             </div>
         </div>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-cyan-600 text-white p-4 mt-20">
+    <footer class="bg-cyan-600 text-white p-4">
         <div class="container mx-auto text-center">
             <p>&copy; 2024 PlaceTrack. All rights reserved.</p>
         </div>
