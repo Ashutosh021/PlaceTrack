@@ -22,6 +22,14 @@
     <div class="min-h-screen flex items-center justify-center">
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Admin Login</h1>
+
+           <!-- Error Message -->
+           <% if (error) { %>
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+                <strong>Error:</strong> <%= error %>
+            </div>
+            <% } %>
+            
         <form action="/api/v1/admin/login" method="POST" class="space-y-6">
             <div>
                 <label for="email" class="block text-gray-700 text-sm font-medium mb-2">Email</label>

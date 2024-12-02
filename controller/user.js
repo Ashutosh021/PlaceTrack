@@ -31,7 +31,7 @@ const userHome = async (req, res) => {
 };
 
 const loginForm = (req, res) => {
-  res.render("login");
+  res.render("login", { error: null });
 };
 
 const userLogin = async (req, res) => {
@@ -40,17 +40,15 @@ const userLogin = async (req, res) => {
   try {
     let user = await userModel.findOne({ email });
     if (!user) {
-      return res.status(400).json({
-        success: false,
-        message: "Email or password is incorrect",
+      return res.render("userLogin", {
+        error: "Email or password is incorrect",
       });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({
-        success: false,
-        message: "Email or password is incorrect",
+      return res.render("login", {
+        error: "Email or password is incorrect",
       });
     }
 
@@ -60,22 +58,24 @@ const userLogin = async (req, res) => {
     return res.redirect("/api/v1/user");
   } catch (err) {
     console.error("Error during login:", err);
-    return res.status(500).json({
-      success: false,
-      message: "Internal server error",
+    return res.render("userLogin", {
+      error: "Internal server error. Please try again later.",
     });
   }
 };
 
+
 const signupForm = (req, res) => {
-  res.render("userSignup");
+  res.render("userSignup", { error: null }); // Initially, no error
 };
 
 const userSignup = async (req, res) => {
   const { name, email, password, phone, section, batch } = req.body;
 
   if (!req.file) {
-    return res.status(400).send("No file uploaded");
+    return res.render("userSignup", {
+      error: "Profile picture is required.",
+    });
   }
 
   try {
@@ -83,7 +83,7 @@ const userSignup = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const uploadResult = await cloudinary.uploader.upload(req.file.path, {
-      folder: 'PlaceTrack',
+      folder: "PlaceTrack",
     });
 
     const newUser = await userModel.create({
@@ -102,14 +102,20 @@ const userSignup = async (req, res) => {
     return res.redirect("/api/v1/user/");
   } catch (err) {
     console.error("Error during signup:", err);
-    return res.status(500).json({
-      success: false,
-      message: "Internal server error",
-      error: err.message,
+
+    if (err.code === 11000) {
+      // Handle duplicate email error
+      let error = err.keyValue.email?err.keyValue.email:err.keyValue.phone
+      return res.render("userSignup", {
+        error: error +' already exits',
+      });
+    }
+
+    return res.render("userSignup", {
+      error: "Internal server error. Please try again later.",
     });
   }
 };
-
 
 const history = async (req, res) => {
   const { email } = req.user;

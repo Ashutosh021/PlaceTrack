@@ -31,19 +31,19 @@
         <div class="flex flex-row flex-wrap justify-center gap-5 w-full ">
             <% if (user) { %>
                 <div class="bg-gray-500 p-6 rounded-lg shadow-md mb-4 w-full">
-                    <h3 class="text-2xl font-semibold text-cyan-500">
+                    <h3 class="text-6xl font-semibold text-cyan-500">
                         <%= user.name %>
                     </h3>
-                    <div class="flex flex-col justify-around ">
-                        <p class="text-white">Email: <%= user.email %></p>
-                        <p class="text-white">Phone: <%= user.phone %></p>
-                        <p class="text-white">Section: <%= user.section %></p>
-                        <p class="text-white">Batch: <%= user.batch %></p>
+                    <div class="flex flex-col justify-around mt-2">
+                        <p class="text-white"><span class="text-cyan-300">E-mail : </span> <%= user.email %></p>
+                        <p class="text-white"><span class="text-cyan-300">Phone : </span> <%= user.phone %></p>
+                        <p class="text-white"><span class="text-cyan-300">Section : </span> <%= user.section %></p>
+                        <p class="text-white"><span class="text-cyan-300">Batch : </span> <%= user.batch %></p>
                         <% if (user.slotIds && user.slotIds.length > 0) { %>
-                            <div class="flex flex-row flex-wrap justify-evenly">
+                            <div class="flex flex-col md:flex-row flex-wrap justify-evenly gap-4">
                                 <% user.slotIds.forEach(slot => { %>
                                     <% if (slot.realTimeLocation !== "null") { %>
-                                    <div class="bg-gray-600 p-10 rounded-lg mt-4 mb-4>
+                                    <div class="bg-gray-600 p-10 rounded-lg w-full md:w-[30%]">
                                         <h3 class="text-2xl font-semibold text-cyan-500 text-center mb-5">Company Details</h3>
                                         <p class="text-white"><%= slot.companyName %></p>
                                         <p class="text-white"><%= slot.companyCity %></p>
@@ -52,9 +52,9 @@
                                         <p class="text-white"><%= slot.realTimeLocation %></p>
                                         <img src="<%= slot.locationPic %>" class="p-5 rounded-md" alt="Company Image">
                                     </div>
-                                <% } %>
+                                    <% } %>
                                 <% }) %>
-                            </div>
+                            </div>                            
                         <% }else{ %>
                             <h4 class="text-center mt-5">Not Registered to any company</h4>
                             <%}%>

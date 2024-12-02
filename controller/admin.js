@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 require('dotenv').config()
 
 const loginForm = (req, res) => {
-  res.render("adminLogin");
+  res.render("adminLogin",{error:null});
 };
 
 
@@ -17,17 +17,15 @@ const adminLogin = async (req, res) => {
   try {
     let user = await adminModel.findOne({ email });
     if (!user) {
-      return res.status(400).json({
-        success: false,
-        message: "Email or password is incorrect",
+      return res.status(400).render("adminLogin", {
+        error: "Email or password is incorrect",
       });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({
-        success: false,
-        message: "Email or password is incorrect",
+      return res.status(400).render("adminLogin", {
+        error: "Email or password is incorrect",
       });
     }
 
@@ -37,9 +35,8 @@ const adminLogin = async (req, res) => {
     return res.redirect("/api/v1/admin");
   } catch (err) {
     console.error("Error during login:", err);
-    return res.status(500).json({
-      success: false,
-      message: "Internal server error",
+    return res.status(500).render("adminLogin", {
+      error: "Internal server error. Please try again later.",
     });
   }
 };
@@ -47,45 +44,73 @@ const adminLogin = async (req, res) => {
 
 
 const signupForm = (req, res) => {
-  res.render("adminSignup");
+  res.render("adminSignup",{error:null});
 };
 
 const adminSignup = async (req, res) => {
   const { name, email, password, adminCode } = req.body;
 
   if (!req.file) {
-    return res.status(400).send("No file uploaded");
+    return res.status(400).render("adminSignup", {
+      error: "No profile picture uploaded. Please upload a file.",
+    });
   }
 
   try {
+    // Check if the user already exists
+    const existingAdmin = await adminModel.findOne({ email });
+    if (existingAdmin) {
+      return res.status(400).render("adminSignup", {
+        error: "An account with this email already exists. Please log in.",
+      });
+    }
+
+    // Validate admin code
+    if (adminCode !== process.env.ADMIN_SECRET) {
+      return res.status(403).render("adminSignup", {
+        error: "Invalid admin code.",
+      });
+    }
+
+    // Hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
+    // Upload profile picture to Cloudinary
     const uploadResult = await cloudinary.uploader.upload(req.file.path, {
-        folder: 'PlaceTrack',
+      folder: "PlaceTrack",
     });
 
+    // Create new admin
     const newAdmin = await adminModel.create({
       name,
       email,
       password: hashedPassword,
       profilePic: uploadResult.secure_url,
-      adminCode
+      adminCode,
     });
 
-    let token = jwt.sign({ email: newAdmin.email }, process.env.JWT_SECRET );
-    res.cookie("token", token, { httpOnly: true, maxAge: 3600000 }); // 1 hour
+    // Generate JWT token
+    const token = jwt.sign({ email: newAdmin.email }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
+    // Set cookie and redirect
+    res.cookie("token", token, { httpOnly: true, maxAge: 3600000 }); // 1 hour
     return res.redirect("/api/v1/admin/");
   } catch (err) {
     console.error("Error during signup:", err);
-    return res.status(500).json({
-      success: false,
-      message: "Internal server error",
-      error: err.message,
+
+    const errorMessage =
+      err.code === 11000 && "Admin Code is Invalid. || Enter a Valid Code"
+
+    return res.status(500).render("adminSignup", {
+      error: errorMessage,
     });
   }
 };
+
+
 
 
 const slotData = async (req, res) => {
