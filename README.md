@@ -74,5 +74,3 @@ For any inquiries or feedback, feel free to reach out:
 - **LinkedIn**: [linkedin.com/in/ashutosh-037463220](https://www.linkedin.com/in/ashutosh-037463220/)  
 - **GitHub**: [github.com/Ashutosh021](https://github.com/Ashutosh021)  
 ```  
-
-Customize the repository link and any additional sections as needed!
